@@ -90,3 +90,4 @@ export const getEndpoint = (category, action) => {
 };
 
 export default API_CONFIG;
+

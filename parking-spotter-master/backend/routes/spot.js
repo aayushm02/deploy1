@@ -66,7 +66,7 @@ router.post('/:id/report', authenticateToken, [
   body('description').optional().isLength({ max: 500 }).withMessage('Description cannot exceed 500 characters')
 ], spotController.reportSpot);
 
-// Dynamic route last
+// Dynamic route last - get spot by ID
 router.get('/:id', optionalAuth, spotController.getSpotById);
 
 module.exports = router;
