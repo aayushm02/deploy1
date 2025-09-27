@@ -1,28 +1,42 @@
 {
   "name": "parking-spot-finder",
   "version": "1.0.0",
-  "description": "A full-stack web application to find and book nearby parking spots",
-  "main": "index.js",
+  "description": "A modern parking spot finder application with real-time location services",
+  "main": "backend/server.js",
   "scripts": {
-    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend",
-    "start": "npm start --prefix backend",
-    "server": "npm run dev --prefix backend",
-    "client": "npm start --prefix frontend",
+    "start": "cd backend && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm run build --prefix frontend",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+    "server": "cd backend && npm run dev",
+    "client": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "test": "cd backend && npm test && cd ../frontend && npm test",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "keywords": [
     "parking",
+    "spot-finder",
+    "react",
+    "nodejs",
+    "mongodb",
     "maps",
-    "booking"
+    "location"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/parking-spot-finder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/parking-spot-finder/issues"
+  },
+  "homepage": "https://github.com/yourusername/parking-spot-finder#readme",
   "devDependencies": {
     "concurrently": "^8.2.2"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   }
 }

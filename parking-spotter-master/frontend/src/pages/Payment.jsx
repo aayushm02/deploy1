@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Card, TextField, Button, Typography, Alert, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { apiService } from '../services/api';
 
 const Payment = () => {
   const { bookingId } = useParams();
@@ -14,11 +14,7 @@ const Payment = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post(
-        'http://localhost:5000/api/payments',
-        { bookingId, amount, method },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await apiService.payments.create({ bookingId, amount, paymentMethod: method });
       navigate('/dashboard');
     } catch (err) {
       setError(err.response.data.message || 'Payment failed');

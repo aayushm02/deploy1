@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import axios from 'axios';
+import { apiService } from '../services/api';
 import { Card, CardContent, Typography, Button, CircularProgress, Box, Chip, IconButton, Slider, Tooltip, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import { AddCircleOutline, RemoveCircleOutline, MyLocation, ZoomIn, ZoomOut, LocalParking } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
@@ -98,7 +98,7 @@ const Map = () => {
           console.log(' Got user location:', { latitude, longitude });
 
           try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL || '/api'}/location`, {
+            const response = await apiService.location.process({
               latitude,
               longitude,
               userId: 'user123',
@@ -170,7 +170,7 @@ const Map = () => {
     const fetchInitialSpotsFallback = async () => {
       if (!mapData) { 
         try {
-          const res = await axios.get(`${process.env.REACT_APP_API_URL || '/api'}/location/spots`);
+          const res = await apiService.location.getSpots();
           if (res.data.success) {
             setMapData({
               center: defaultCenter,
@@ -330,7 +330,7 @@ const Map = () => {
     
     // Send to backend
     try {
-      axios.post(`${process.env.REACT_APP_API_URL || '/api'}/location/addParkingSpot`, newSpot)
+      apiService.spots.create(newSpot)
         .then(response => {
           console.log('Added new parking spot to backend:', response.data);
         })

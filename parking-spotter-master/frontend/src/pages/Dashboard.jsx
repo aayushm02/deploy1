@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Container, Card, CardContent, Typography, Button, Alert, Grid } from '@mui/material';
+import { apiService } from '../services/api';
 
 const Dashboard = () => {
   const [bookings, setBookings] = useState([]);
@@ -12,9 +12,7 @@ const Dashboard = () => {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/bookings/user', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await apiService.bookings.getUserBookings();
         setBookings(res.data);
       } catch (err) {
         setError(err.response.data.message || 'Failed to fetch bookings');
@@ -26,9 +24,7 @@ const Dashboard = () => {
   const handleCancel = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:5000/api/bookings/cancel/${id}`, {}, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await apiService.bookings.cancel(id);
       setBookings(bookings.filter((booking) => booking._id !== id));
     } catch (err) {
       setError(err.response.data.message || 'Failed to cancel booking');

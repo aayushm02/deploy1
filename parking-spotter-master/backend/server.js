@@ -69,6 +69,15 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/location', locationRoutes);
 app.use('/api/spots', spotRoutes);
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Card, TextField, Button, Typography, Alert } from '@mui/material';
+import { apiService } from '../services/api';
 
 const BookingForm = () => {
   const { spotId } = useParams();
@@ -14,11 +14,7 @@ const BookingForm = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post(
-        'http://localhost:5000/api/bookings',
-        { spotId, startTime, endTime },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await apiService.bookings.create({ spotId, startTime, endTime });
       navigate('/dashboard');
     } catch (err) {
       setError(err.response.data.message || 'Booking failed');

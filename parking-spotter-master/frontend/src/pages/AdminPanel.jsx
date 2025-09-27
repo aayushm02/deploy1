@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container, Card, CardContent, Typography, Button, Alert, Grid } from '@mui/material';
+import { apiService } from '../services/api';
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
@@ -12,8 +12,8 @@ const AdminPanel = () => {
       try {
         const token = localStorage.getItem('token');
         const [usersRes, spotsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/admin/users', { headers: { Authorization: `Bearer ${token}` } }),
-          axios.get('http://localhost:5000/api/admin/spots', { headers: { Authorization: `Bearer ${token}` } }),
+          apiService.admin.getUsers(),
+          apiService.admin.getSpots(),
         ]);
         setUsers(usersRes.data);
         setSpots(spotsRes.data);
@@ -27,9 +27,7 @@ const AdminPanel = () => {
   const handleDeleteUser = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/admin/users/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await apiService.admin.deleteUser(id);
       setUsers(users.filter((user) => user._id !== id));
     } catch (err) {
       setError(err.response.data.message || 'Failed to delete user');

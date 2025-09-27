@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { Container, Card, TextField, Button, Typography, Alert } from '@mui/material';
+import { apiService } from '../services/api';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const res = await apiService.auth.login({ email, password });
       if (res && res.data && res.data.token) {
         localStorage.setItem('token', res.data.token);
         navigate('/dashboard');
